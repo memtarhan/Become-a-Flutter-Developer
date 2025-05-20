@@ -21,8 +21,26 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // TODO: Track current tab
-  // TODO: Define tab bar destinations
+  int tab = 0;
+
+  List<NavigationDestination> appBarDestinations = const [
+    NavigationDestination(
+        icon: Icon(Icons.credit_card),
+        label: 'Category',
+        selectedIcon: Icon(Icons.credit_card)
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.credit_card),
+      label: 'Post',
+      selectedIcon: Icon(Icons.credit_card),
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.credit_card),
+      label: 'Restaurant',
+      selectedIcon: Icon(Icons.credit_card),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     // TODO: Define pages
@@ -46,7 +64,15 @@ class _HomeState extends State<Home> {
           style: Theme.of(context).textTheme.displayLarge,
         ),
       ),
-      // TODO: Add bottom navigation bar
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: tab,
+        onDestinationSelected: (index) {
+          setState(() {
+            tab = index;
+          });
+        },
+        destinations: appBarDestinations,
+      ),
     );
   }
 }

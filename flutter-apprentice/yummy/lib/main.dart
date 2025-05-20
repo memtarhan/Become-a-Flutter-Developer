@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'components/color_button.dart';
+import 'components/theme_button.dart';
 import 'constants.dart';
 
 void main() {
@@ -6,15 +9,21 @@ void main() {
   runApp(Yummy());
 }
 
-class Yummy extends StatelessWidget {
-  ThemeMode themeMode = ThemeMode.light; // Manual theme toggle
-  ColorSelection colorSelected = ColorSelection.pink;
+class Yummy extends StatefulWidget {
 
-  // 2
   Yummy({super.key});
 
-  // TODO: Add changeTheme above here
+  @override
+  State<Yummy> createState() => _YummyState();
+}
 
+class _YummyState extends State<Yummy> {
+  ThemeMode themeMode = ThemeMode.light;
+
+  // Manual theme toggle
+  ColorSelection colorSelected = ColorSelection.pink;
+
+  // TODO: Add changeTheme above here
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Yummy';
@@ -42,7 +51,15 @@ class Yummy extends StatelessWidget {
       // 4
       home: Scaffold(
         appBar: AppBar(
-          // TODO: Add action buttons
+          actions: [
+            ThemeButton(
+              changeThemeMode: changeThemeMode,
+            ),
+            ColorButton(
+              changeColor: changeColor,
+              colorSelected: colorSelected,
+            ),
+          ],
           elevation: 4.0,
           title: const Text(
             appTitle,
@@ -57,5 +74,22 @@ class Yummy extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  void changeThemeMode(bool useLightMode) {
+    setState(() {
+      // 1
+      themeMode = useLightMode
+          ? ThemeMode.light //
+          : ThemeMode.dark;
+    });
+  }
+
+  void changeColor(int value) {
+    setState(() {
+      // 2
+      colorSelected = ColorSelection.values[value];
+    });
   }
 }

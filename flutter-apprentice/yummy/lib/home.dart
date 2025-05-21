@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'components/category_card.dart';
 import 'components/color_button.dart';
 import 'components/theme_button.dart';
 import 'constants.dart';
+import 'models/food_category.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -43,11 +45,25 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Define pages
+    final pages = [
+      // 1
+      Center(
+        // 2
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 300),
+          child: CategoryCard(category: categories[0]),),
+      ),
+
+      // TODO: Replace with Post Card
+      Container(color: Colors.green),
+      // TODO: Replace with Restaurant Landscape Card
+      Container(color: Colors.blue)
+    ];
+
     return Scaffold(
       appBar: AppBar(
         elevation: 4.0,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         actions: [
           ThemeButton(changeThemeMode: widget.changeTheme),
           ColorButton(
@@ -56,14 +72,13 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      // TODO: Switch between pages
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text(
-          'You Hungry?!',
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
+
+
+      body: IndexedStack(
+        index: tab,
+        children: pages,
       ),
+      
       bottomNavigationBar: NavigationBar(
         selectedIndex: tab,
         onDestinationSelected: (index) {

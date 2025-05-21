@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api/mock_yummy_service.dart';
+import '../components/restaurant_section.dart';
 
 class ExplorePage extends StatelessWidget {
   // 1
@@ -22,10 +23,8 @@ class ExplorePage extends StatelessWidget {
           final restaurants = snapshot.data?.restaurants ?? [];
           final categories = snapshot.data?.categories ?? [];
           final posts = snapshot.data?.friendPosts ?? [];
-          // TODO: Replace this with Restaurant Section
-          return const Center(
-            child: SizedBox(child: Text('Show RestaurantSection')),
-          );
+          // TODO: Wrap in a ListView
+          return RestaurantSection(restaurants: restaurants);
         } else {
           // 6
           return const Center(child: CircularProgressIndicator());

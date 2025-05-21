@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yummy_2/components/category_section.dart';
 
 import '../api/mock_yummy_service.dart';
 import '../components/restaurant_section.dart';
@@ -23,8 +24,23 @@ class ExplorePage extends StatelessWidget {
           final restaurants = snapshot.data?.restaurants ?? [];
           final categories = snapshot.data?.categories ?? [];
           final posts = snapshot.data?.friendPosts ?? [];
-          // TODO: Wrap in a ListView
-          return RestaurantSection(restaurants: restaurants);
+          // 1
+          return ListView(
+            // 2
+            shrinkWrap: true,
+            // 3
+            scrollDirection: Axis.vertical,
+            // 4
+            children: [
+              RestaurantSection(restaurants: restaurants),
+              CategorySection(categories: categories),
+              // TODO: Add PostSection
+              Container(
+                height: 300,
+                color: Colors.orange,
+              ),
+            ],
+          );
         } else {
           // 6
           return const Center(child: CircularProgressIndicator());

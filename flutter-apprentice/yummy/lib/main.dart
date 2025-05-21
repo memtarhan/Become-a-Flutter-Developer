@@ -5,12 +5,11 @@ import 'home.dart';
 
 void main() {
   // 1
-  runApp(Yummy());
+  runApp(const Yummy());
 }
 
 class Yummy extends StatefulWidget {
-
-  Yummy({super.key});
+  const Yummy({super.key});
 
   @override
   State<Yummy> createState() => _YummyState();
@@ -32,8 +31,9 @@ class _YummyState extends State<Yummy> {
     //3
     return MaterialApp(
       title: appTitle,
-      //debugShowCheckedModeBanner: false, // Uncomment to remove Debug banner
+      debugShowCheckedModeBanner: false,
 
+      // Uncomment to remove Debug banner
       themeMode: themeMode,
       theme: ThemeData(
         colorSchemeSeed: colorSelected.color,

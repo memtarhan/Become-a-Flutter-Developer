@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yummy_2/components/category_section.dart';
+import 'package:yummy_2/components/post_section.dart';
 
 import '../api/mock_yummy_service.dart';
 import '../components/restaurant_section.dart';
@@ -34,11 +35,7 @@ class ExplorePage extends StatelessWidget {
             children: [
               RestaurantSection(restaurants: restaurants),
               CategorySection(categories: categories),
-              // TODO: Add PostSection
-              Container(
-                height: 300,
-                color: Colors.orange,
-              ),
+              PostSection(posts: posts),
             ],
           );
         } else {

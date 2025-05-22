@@ -1,46 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:yummy_2/components/category_section.dart';
-import 'package:yummy_2/components/post_section.dart';
 
 import '../api/mock_yummy_service.dart';
+import '../components/category_section.dart';
+import '../components/post_section.dart';
 import '../components/restaurant_section.dart';
+import '../models/cart_manager.dart';
+import '../models/order_manager.dart';
 
 class ExplorePage extends StatelessWidget {
-  // 1
   final mockService = MockYummyService();
+  final CartManager cartManager;
+  final OrderManager orderManager;
 
-  ExplorePage({super.key});
+  ExplorePage(
+      {super.key, required this.cartManager, required this.orderManager});
 
   @override
   Widget build(BuildContext context) {
-    // 1
     return FutureBuilder(
-      // 2
       future: mockService.getExploreData(),
-      // 3
       builder: (context, AsyncSnapshot<ExploreData> snapshot) {
-        // 4
         if (snapshot.connectionState == ConnectionState.done) {
-          // 5
           final restaurants = snapshot.data?.restaurants ?? [];
           final categories = snapshot.data?.categories ?? [];
           final posts = snapshot.data?.friendPosts ?? [];
-          // 1
           return ListView(
-            // 2
-            shrinkWrap: true,
-            // 3
-            scrollDirection: Axis.vertical,
-            // 4
-            children: [
-              RestaurantSection(restaurants: restaurants),
-              CategorySection(categories: categories),
-              PostSection(posts: posts),
-            ],
-          );
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              children: [
+                RestaurantSection(
+                  restaurants: restaurants,
+                  cartManager: cartManager,
+                  orderManager: orderManager,
+                ),
+                CategorySection(categories: categories),
+                PostSection(posts: posts),
+              ]);
         } else {
-          // 6
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );

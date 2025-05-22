@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yummy_2/components/post_card.dart';
+import 'package:yummy/components/post_card.dart';
 
 import '../models/post.dart';
 

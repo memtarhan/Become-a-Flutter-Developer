@@ -31,7 +31,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     final colorTheme = Theme.of(context).colorScheme;
 // 4
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.all(20.0),
 // 5
       child: Wrap(
         children: [
@@ -43,9 +43,13 @@ class _ItemDetailsState extends State<ItemDetails> {
                 widget.item.name,
                 style: textTheme.headlineMedium,
               ),
-// TODO: Add Liked Badge
+              const SizedBox(height: 16.0),
+              _mostLikedBadge(colorTheme),
+              const SizedBox(height: 16.0),
               Text(widget.item.description),
-// TODO: Add Item Image
+              const SizedBox(height: 16.0),
+              _itemImage(widget.item.imageUrl),
+              const SizedBox(height: 16.0),
 // TODO: Add Cart Control
             ],
           ),
@@ -53,7 +57,37 @@ class _ItemDetailsState extends State<ItemDetails> {
       ),
     );
   }
-// TODO: Create Most Liked Badge
-// TODO: Create Item Image
+
+  // 1
+  Widget _mostLikedBadge(ColorScheme colorTheme) {
+// 2
+    return Align(
+// 3
+      alignment: Alignment.centerLeft,
+// 4
+      child: Container(
+        padding: const EdgeInsets.all(4.0),
+        color: colorTheme.onPrimary,
+// 5
+        child: const Text('#1 Most Liked'),
+      ),
+    );
+  }
+
+// 1
+  Widget _itemImage(String imageUrl) {
+// 2
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+// 3
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
 // TODO: Create Cart Control
 }

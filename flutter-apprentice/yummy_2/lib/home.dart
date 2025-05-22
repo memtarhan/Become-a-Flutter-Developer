@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yummy/screens/myorders_page.dart';
 
 import 'components/color_button.dart';
 import 'components/theme_button.dart';
@@ -56,13 +57,7 @@ class _HomeState extends State<Home> {
         cartManager: widget.cartManager,
         orderManager: widget.ordersManager,
       ),
-      // TODO: Replace with Order Page
-      const Center(
-        child: Text(
-          'Order Page',
-          style: TextStyle(fontSize: 32.0),
-        ),
-      ),
+      MyOrdersPage(orderManager: widget.ordersManager),
       const Center(
         child: Text(
           'Account Page',
@@ -75,7 +70,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(widget.appTitle),
         elevation: 4.0,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         actions: [
           ThemeButton(
             changeThemeMode: widget.changeTheme,

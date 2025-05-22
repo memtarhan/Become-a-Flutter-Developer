@@ -161,8 +161,93 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
   }
 
-// TODO: Build Order Summary
-// TODO: Build Submit Order Button
+  Widget _buildOrderSummary(BuildContext context) {
+    final colorTheme = Theme.of(context).colorScheme;
+
+    return Expanded(
+      child: ListView.builder(
+        itemCount: widget.cartManager.items.length,
+        itemBuilder: (context, index) {
+          final item = widget.cartManager.itemAt(index);
+
+          // TODO: Wrap in a Dismissible Widget
+          return Dismissible(
+            key: Key(item.id),
+            direction: DismissDirection.endToStart,
+            background: Container(),
+            secondaryBackground: const SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.delete),
+                ],
+              ),
+            ),
+            onDismissed: (direction) {
+              setState(() {
+                widget.cartManager.removeItem(item.id);
+              });
+              widget.didUpdate();
+            },
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  border: Border.all(
+                    color: colorTheme.primary,
+                    width: 2.0,
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  child: Text('x${item.quantity}'),
+                ),
+              ),
+              title: Text(item.name),
+              subtitle: Text('Price: \$${item.price}'),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+// 1
+    return ElevatedButton(
+// 2
+      onPressed: widget.cartManager.isEmpty
+          ? null
+// 3
+          : () {
+              final selectedSegment = this.selectedSegment;
+              final selectedTime = this.selectedTime;
+              final selectedDate = this.selectedDate;
+              final name = _nameController.text;
+              final items = widget.cartManager.items;
+// 4
+              final order = Order(
+                selectedSegment: selectedSegment,
+                selectedTime: selectedTime,
+                selectedDate: selectedDate,
+                name: name,
+                items: items,
+              );
+              // 5
+              widget.cartManager.resetCart();
+// 6
+              widget.onSubmit(order);
+            },
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+// 7
+        child: Text(
+            '''Submit Order - \$${widget.cartManager.totalCost.toStringAsFixed(2)}'''),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 // 6
@@ -217,8 +302,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
 // 7
             const SizedBox(height: 16.0),
 
-// TODO: Add Order Summary
-// TODO: Add Submit Order Button
+            const Text('Order Summary'),
+            _buildOrderSummary(context),
+            _buildSubmitButton(),
           ],
         ),
       ),

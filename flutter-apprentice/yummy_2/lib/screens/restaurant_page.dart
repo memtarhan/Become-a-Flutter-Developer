@@ -121,13 +121,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
     );
   }
 
-  // TODO: Replace _buildGridItem()
   Widget _buildGridItem(int index) {
     final item = widget.restaurant.items[index];
     return InkWell(
-      onTap: () {
-        // Present Bottom Sheet in the future.
-      },
+      onTap: () => _showBottomSheet(item),
       child: RestaurantItem(item: item),
     );
   }
@@ -177,7 +174,24 @@ class _RestaurantPageState extends State<RestaurantPage> {
     );
   }
 
-  // TODO: Show Bottom Sheet
+  // 1
+  void _showBottomSheet(Item item) {
+    // 2
+    showModalBottomSheet<void>(
+      // 3
+      isScrollControlled: true,
+      // 4
+      context: context,
+      // 5
+      constraints: const BoxConstraints(maxWidth: 480),
+      // 6
+      // TODO: Replace with Item Details Widget
+      builder: (context) => Container(
+        color: Colors.red,
+        height: 400,
+      ),
+    );
+  }
   // TODO: Create Drawer
   // TODO: Open Drawer
   // TODO: Create Floating Action Button

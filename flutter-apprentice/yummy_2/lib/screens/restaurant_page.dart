@@ -5,6 +5,7 @@ import '../components/restaurant_item.dart';
 import '../models/cart_manager.dart';
 import '../models/order_manager.dart';
 import '../models/restaurant.dart';
+import 'checkout_page.dart';
 
 class RestaurantPage extends StatefulWidget {
   final Restaurant restaurant;
@@ -200,8 +201,23 @@ class _RestaurantPageState extends State<RestaurantPage> {
   Widget _buildEndDrawer() {
     return SizedBox(
       width: drawerWidth,
-// TODO: Replace with Checkout Page
-      child: Container(color: Colors.red),
+// 1
+      child: Drawer(
+// 2
+        child: CheckoutPage(
+// 3
+          cartManager: widget.cartManager,
+// 4
+          didUpdate: () {
+            setState(() {});
+          },
+// 5
+          onSubmit: (order) {
+            widget.ordersManager.addOrder(order);
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+        ),
+      ),
     );
   }
 

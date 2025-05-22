@@ -24,8 +24,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
     return CustomScrollView(
       slivers: [
         _buildSliverAppBar(),
-        SliverToBoxAdapter(child: Container(height: 200.0, color: Colors.red)),
-        // TODO: Add Restaurant Info Section
+        _buildInfoSection(),
         SliverToBoxAdapter(
           child: Container(height: 300.0, color: Colors.green),
         ),
@@ -82,7 +81,37 @@ class _RestaurantPageState extends State<RestaurantPage> {
     );
   }
 
-  // TODO: Build Info Section
+  // 1
+  SliverToBoxAdapter _buildInfoSection() {
+    // 2
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
+    // 3
+    final restaurant = widget.restaurant;
+    // 4
+    return SliverToBoxAdapter(
+      // 5
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        // 6
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 7
+            Text(restaurant.name, style:
+            textTheme.headlineLarge,),
+            Text(restaurant.address, style: textTheme.bodySmall,),
+            Text(
+              restaurant.getRatingAndDistance(),
+              style: textTheme.bodySmall,),
+            Text(restaurant.attributes, style:
+            textTheme.labelSmall,),
+          ],
+        ),
+      ),
+    );
+  }
   // TODO: Build Grid Item
   // TODO: Build Section Title
   // TODO: Build Grid View

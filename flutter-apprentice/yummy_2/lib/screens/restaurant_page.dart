@@ -1,6 +1,7 @@
 // 1
 import 'package:flutter/material.dart';
 
+import '../components/restaurant_item.dart';
 import '../models/restaurant.dart';
 
 // 2
@@ -16,20 +17,18 @@ class RestaurantPage extends StatefulWidget {
 
 // 4
 class _RestaurantPageState extends State<RestaurantPage> {
-  // TODO: Add Desktop Threshold
+  static const desktopThreshold = 700;
   // TODO: Add Constraint Properties
   // TODO: Calculate Constrained Width
-  // TODO: Add Calculate Column Count
+  int calculateColumnCount(double screenWidth) {
+    return screenWidth > desktopThreshold ? 2 : 1;
+  }
   CustomScrollView _buildCustomScrollView() {
     return CustomScrollView(
       slivers: [
         _buildSliverAppBar(),
         _buildInfoSection(),
-        SliverToBoxAdapter(
-          child: Container(height: 300.0, color: Colors.green),
-        ),
-        // TODO: Add Menu Item Grid View Section
-        SliverFillRemaining(child: Container(color: Colors.blue)),
+        _buildGridViewSection("Menu"),
       ],
     );
   }
@@ -112,10 +111,78 @@ class _RestaurantPageState extends State<RestaurantPage> {
       ),
     );
   }
-  // TODO: Build Grid Item
-  // TODO: Build Section Title
-  // TODO: Build Grid View
-  // TODO: Build Grid View Section
+
+  Widget _buildGridItem(int index) {
+    final item = widget.restaurant.items[index];
+    return InkWell(
+      onTap: () {
+// Present Bottom Sheet in the future.
+      },
+      child: RestaurantItem(item: item),
+    );
+  }
+
+  Widget _sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,),
+      ),
+    );
+  }
+
+  // 1
+  GridView _buildGridView(int columns) {
+    // 2
+    return GridView.builder(
+      padding: const EdgeInsets.all(0),
+      // 3
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: 3.5,
+        crossAxisCount: columns,
+      ),
+      // 4
+      itemBuilder: (context, index) => _buildGridItem(index),
+      // 5
+      itemCount: widget.restaurant.items.length,
+      // 6
+      shrinkWrap: true,
+      // 7
+      physics: const NeverScrollableScrollPhysics(),
+    );
+  }
+
+  // 1
+  SliverToBoxAdapter _buildGridViewSection(String title) {
+    // 2
+    final columns =
+    calculateColumnCount(MediaQuery
+        .of(context)
+        .size
+        .width);
+    // 3
+    return SliverToBoxAdapter(
+      // 4
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        // 5
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 6
+            _sectionTitle(title),
+            // 7
+            _buildGridView(columns),
+          ],
+        ),
+      ),
+    );
+  }
   // TODO: Replace build method
   @override
   Widget build(BuildContext context) {

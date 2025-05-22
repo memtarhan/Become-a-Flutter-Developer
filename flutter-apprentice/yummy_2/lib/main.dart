@@ -1,12 +1,22 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-
 import 'constants.dart';
 import 'home.dart';
-import 'models/cart_manager.dart';
-import 'models/order_manager.dart';
+import '../models/models.dart';
+import 'screens/screens.dart';
 
 void main() {
   runApp(const Yummy());
+}
+
+/// Allows the ability to scroll by dragging with touch, mouse, and trackpad.
+class CustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad
+  };
 }
 
 class Yummy extends StatefulWidget {
@@ -20,11 +30,19 @@ class _YummyState extends State<Yummy> {
   ThemeMode themeMode = ThemeMode.light;
   ColorSelection colorSelected = ColorSelection.pink;
 
+  /// Authentication to manage user login session
+  // ignore: unused_field
+  final YummyAuth _auth = YummyAuth();
+
   /// Manage user's shopping cart for the items they order.
   final CartManager _cartManager = CartManager();
 
   /// Manage user's orders submitted
   final OrderManager _orderManager = OrderManager();
+
+  // TODO: Initialize GoRouter
+
+  // TODO: Add Redirect Handler
 
   void changeThemeMode(bool useLightMode) {
     setState(() {
@@ -42,11 +60,10 @@ class _YummyState extends State<Yummy> {
 
   @override
   Widget build(BuildContext context) {
-    const appTitle = 'Yummy';
-
+    // TODO: Replace with Router
     return MaterialApp(
-      title: appTitle,
       debugShowCheckedModeBanner: false, // Uncomment to remove Debug banner
+      scrollBehavior: CustomScrollBehavior(),
       themeMode: themeMode,
       theme: ThemeData(
         colorSchemeSeed: colorSelected.color,
@@ -58,14 +75,7 @@ class _YummyState extends State<Yummy> {
         useMaterial3: true,
         brightness: Brightness.dark,
       ),
-      home: Home(
-        appTitle: appTitle,
-        cartManager: _cartManager,
-        ordersManager: _orderManager,
-        changeTheme: changeThemeMode,
-        changeColor: changeColor,
-        colorSelected: colorSelected,
-      ),
+      home: LoginPage(onLogIn: (credentials) {}),
     );
   }
 }

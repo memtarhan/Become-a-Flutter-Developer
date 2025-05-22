@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../components/item_details.dart';
 import '../components/restaurant_item.dart';
 import '../models/cart_manager.dart';
 import '../models/order_manager.dart';
@@ -185,10 +186,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
       // 5
       constraints: const BoxConstraints(maxWidth: 480),
       // 6
-      // TODO: Replace with Item Details Widget
-      builder: (context) => Container(
-        color: Colors.red,
-        height: 400,
+      builder: (context) => ItemDetails(
+        item: item,
+        cartManager: widget.cartManager,
+        quantityUpdated: () {
+          setState(() {});
+        },
       ),
     );
   }

@@ -1,64 +1,71 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'cupertino_screen.dart';
-import 'android_screen.dart';
+/// Flutter code sample for [CupertinoActionSheet].
 
-void main() {
-  runApp(PlatformSelectionApp());
-}
+void main() => runApp(const ActionSheetApp());
 
-class PlatformSelectionApp extends StatelessWidget {
-  const PlatformSelectionApp({super.key});
+class ActionSheetApp extends StatelessWidget {
+  const ActionSheetApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Adaptive UI Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: PlatformSelectionScreen(),
+    return const CupertinoApp(
+      theme: CupertinoThemeData(brightness: Brightness.light),
+      home: ActionSheetExample(),
     );
   }
 }
 
-class PlatformSelectionScreen extends StatelessWidget {
-  const PlatformSelectionScreen({super.key});
+class ActionSheetExample extends StatelessWidget {
+  const ActionSheetExample({super.key});
+
+  // This shows a CupertinoModalPopup which hosts a CupertinoActionSheet.
+  void _showActionSheet(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder:
+          (BuildContext context) => CupertinoActionSheet(
+        title: const Text('Title'),
+        message: const Text('Message'),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            /// This parameter indicates the action would be a default
+            /// default behavior, turns the action's text to bold text.
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Default Action'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Action'),
+          ),
+          CupertinoActionSheetAction(
+            /// This parameter indicates the action would perform
+            /// a destructive action such as delete or exit and turns
+            /// the action's text color to red.
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Destructive Action'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Select Platform')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AndroidScreen()),
-                );
-              },
-              child: Text('Material Design (Android)'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return CupertinoApp(
-                        theme: CupertinoThemeData(brightness: Brightness.light),
-                        home: CupertinoScreen(),
-                      );
-                    },
-                  ),
-                );
-              },
-              child: Text('Cupertino (iOS)'),
-            ),
-          ],
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(middle: Text('CupertinoActionSheet Sample')),
+      child: Center(
+        child: CupertinoButton(
+          onPressed: () => _showActionSheet(context),
+          child: const Text('CupertinoActionSheet'),
         ),
       ),
     );

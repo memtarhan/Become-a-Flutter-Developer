@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
       MyOrdersPage(orderManager: widget.ordersManager),
       AccountPage(
           onLogOut: (logout) async {
-            // TODO: Logout and go to login
+            widget.auth.signOut().then((value) => context.go('/login'));
           },
           user: User(
               firstName: 'Stef',
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         actions: [
           ThemeButton(
             changeThemeMode: widget.changeTheme,

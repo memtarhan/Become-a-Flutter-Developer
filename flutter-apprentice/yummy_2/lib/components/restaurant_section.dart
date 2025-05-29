@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../components/restaurant_landscape_card.dart';
-import '../models/cart_manager.dart';
-import '../models/order_manager.dart';
-import '../models/restaurant.dart';
-import '../screens/restaurant_page.dart';
+import '../components/components.dart';
+import '../constants.dart';
+import '../models/models.dart';
 
 class RestaurantSection extends StatelessWidget {
   final List<Restaurant> restaurants;
@@ -15,8 +14,7 @@ class RestaurantSection extends StatelessWidget {
     super.key,
     required this.restaurants,
     required this.cartManager,
-    required this.orderManager,
-  });
+      required this.orderManager});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +27,7 @@ class RestaurantSection extends StatelessWidget {
             padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
             child: Text(
               'Food near me',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(
@@ -42,23 +37,14 @@ class RestaurantSection extends StatelessWidget {
               itemCount: restaurants.length,
               itemBuilder: (context, index) {
                 return SizedBox(
-                  width: 300,
-                  child: RestaurantLandscapeCard(
-                    restaurant: restaurants[index],
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RestaurantPage(
-                            restaurant: restaurants[index],
-                            cartManager: cartManager,
-                            ordersManager: orderManager,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
+                    width: 300,
+                    child: RestaurantLandscapeCard(
+                      restaurant: restaurants[index],
+                      onTap: () {
+                        context.go(
+                            '/${YummyTab.home.value}/restaurant/${restaurants[index].id}');
+                      },
+                    ));
               },
             ),
           ),

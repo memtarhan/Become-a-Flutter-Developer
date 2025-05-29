@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yummy/screens/login_page.dart';
+import 'package:yummy/screens/restaurant_page.dart';
 
 import '../models/models.dart';
 import 'constants.dart';
@@ -46,7 +47,7 @@ class _YummyState extends State<Yummy> {
   // 1
   late final _router = GoRouter(
     initialLocation: '/login',
-// TODO: Add App Redirect
+    redirect: _appRedirect,
 // 3
     routes: [
       GoRoute(
@@ -88,7 +89,22 @@ class _YummyState extends State<Yummy> {
           },
 // 10
           routes: [
-// TODO: Add Restaurant Route
+            GoRoute(
+// 1
+                path: 'restaurant/:id',
+                builder: (context, state) {
+// 2
+                  final id =
+                      int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+// 3
+                  final restaurant = restaurants[id];
+// 4
+                  return RestaurantPage(
+                    restaurant: restaurant,
+                    cartManager: _cartManager,
+                    ordersManager: _orderManager,
+                  );
+                }),
           ]),
     ],
     errorPageBuilder: (context, state) {
@@ -105,7 +121,27 @@ class _YummyState extends State<Yummy> {
     },
   );
 
-  // TODO: Add Redirect Handler
+  // 1
+  Future<String?> _appRedirect(
+      BuildContext context, GoRouterState state) async {
+// 2
+    final loggedIn = await _auth.loggedIn;
+// 3
+    final isOnLoginPage = state.matchedLocation == '/login';
+// 4
+// Go to /login if the user is not signed in
+    if (!loggedIn) {
+      return '/login';
+    }
+// 5
+// Go to root if the user is already signed in
+    else if (loggedIn && isOnLoginPage) {
+      return '/${YummyTab.home.value}';
+    }
+    // 6
+// no redirect
+    return null;
+  }
 
   void changeThemeMode(bool useLightMode) {
     setState(() {

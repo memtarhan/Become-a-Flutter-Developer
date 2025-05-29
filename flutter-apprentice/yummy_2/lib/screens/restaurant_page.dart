@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../components/item_details.dart';
-import '../components/restaurant_item.dart';
-import '../models/cart_manager.dart';
-import '../models/order_manager.dart';
-import '../models/restaurant.dart';
+import '../components/components.dart';
+import '../constants.dart';
+import '../models/models.dart';
 import 'checkout_page.dart';
 
 class RestaurantPage extends StatefulWidget {
@@ -16,8 +15,7 @@ class RestaurantPage extends StatefulWidget {
     super.key,
     required this.restaurant,
     required this.cartManager,
-    required this.ordersManager,
-  });
+      required this.ordersManager});
 
   @override
   State<RestaurantPage> createState() => _RestaurantPageState();
@@ -28,7 +26,6 @@ class _RestaurantPageState extends State<RestaurantPage> {
   static const double maxWidth = 1000;
   static const desktopThreshold = 700;
   static const double drawerWidth = 375.0;
-
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   double _calculateConstrainedWidth(double screenWidth) {
@@ -66,23 +63,18 @@ class _RestaurantPageState extends State<RestaurantPage> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 30.0),
                   decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(16.0),
-                    image: DecorationImage(
-                      image: AssetImage(widget.restaurant.imageUrl),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(16.0),
+                      image: DecorationImage(
+                          image: AssetImage(widget.restaurant.imageUrl),
+                          fit: BoxFit.cover)),
                 ),
                 const Positioned(
                   bottom: 0.0,
                   left: 16.0,
                   child: CircleAvatar(
                     radius: 30,
-                    child: Icon(
-                      Icons.store,
-                      color: Colors.white,
-                    ),
+                    child: Icon(Icons.store, color: Colors.white),
                   ),
                 ),
               ],
@@ -102,22 +94,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              restaurant.name,
-              style: textTheme.headlineLarge,
-            ),
-            Text(
-              restaurant.address,
-              style: textTheme.bodySmall,
-            ),
-            Text(
-              restaurant.getRatingAndDistance(),
-              style: textTheme.bodySmall,
-            ),
-            Text(
-              restaurant.attributes,
-              style: textTheme.labelSmall,
-            ),
+            Text(restaurant.name, style: textTheme.headlineLarge),
+            Text(restaurant.address, style: textTheme.bodySmall),
+            Text(restaurant.getRatingAndDistance(), style: textTheme.bodySmall),
+            Text(restaurant.attributes, style: textTheme.labelSmall),
           ],
         ),
       ),
@@ -137,10 +117,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -177,17 +154,11 @@ class _RestaurantPageState extends State<RestaurantPage> {
     );
   }
 
-  // 1
   void _showBottomSheet(Item item) {
-    // 2
     showModalBottomSheet<void>(
-      // 3
       isScrollControlled: true,
-      // 4
       context: context,
-      // 5
       constraints: const BoxConstraints(maxWidth: 480),
-      // 6
       builder: (context) => ItemDetails(
         item: item,
         cartManager: widget.cartManager,
@@ -201,23 +172,18 @@ class _RestaurantPageState extends State<RestaurantPage> {
   Widget _buildEndDrawer() {
     return SizedBox(
       width: drawerWidth,
-// 1
       child: Drawer(
-// 2
-        child: CheckoutPage(
-// 3
-          cartManager: widget.cartManager,
-// 4
-          didUpdate: () {
-            setState(() {});
-          },
-// 5
-          onSubmit: (order) {
-            widget.ordersManager.addOrder(order);
-            Navigator.popUntil(context, (route) => route.isFirst);
-          },
-        ),
-      ),
+          child: CheckoutPage(
+        cartManager: widget.cartManager,
+        didUpdate: () {
+          setState(() {});
+        },
+        onSubmit: (order) {
+          widget.ordersManager.addOrder(order);
+          context.pop();
+          context.go('/${YummyTab.orders.value}');
+        },
+      )),
     );
   }
 
@@ -225,17 +191,11 @@ class _RestaurantPageState extends State<RestaurantPage> {
     scaffoldKey.currentState!.openEndDrawer();
   }
 
-  // 1
   Widget _buildFloatingActionButton() {
-    // 2
     return FloatingActionButton.extended(
-      // 3
       onPressed: openDrawer,
-      // 4
       tooltip: 'Cart',
-      // 5
       icon: const Icon(Icons.shopping_cart),
-      // 6
       label: Text('${widget.cartManager.items.length} Items in cart'),
     );
   }

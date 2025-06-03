@@ -4,17 +4,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../network/service_interface.dart';
-import '../widgets/common.dart';
+
 import '../../data/models/models.dart';
 import '../../network/model_response.dart';
 import '../../network/query_result.dart';
+import '../../network/service_interface.dart';
+import '../../providers.dart';
 import '../bookmarks/bookmarks.dart';
 import '../recipe_card.dart';
 import '../recipes/recipe_details.dart';
 import '../theme/colors.dart';
+import '../widgets/common.dart';
 import '../widgets/custom_dropdown.dart';
-// TODO: Add imports
 
 
 enum ListType { all, bookmarks }
@@ -27,7 +28,7 @@ class RecipeList extends ConsumerStatefulWidget {
 }
 
 class _RecipeListState extends ConsumerState<RecipeList> {
-  // TODO Add Search Index Key
+  static const String prefSearchKey = 'previousSearches';
 
   late TextEditingController searchTextController;
   final ScrollController _scrollController = ScrollController();
@@ -83,11 +84,26 @@ class _RecipeListState extends ConsumerState<RecipeList> {
   }
 
   void savePreviousSearches() async {
-    // TODO Save Current Index
+    // 1
+    final prefs = ref.read(sharedPrefProvider);
+    // 2
+    prefs.setStringList(prefSearchKey, previousSearches);
   }
 
   void getPreviousSearches() async {
-    // TODO Get Current Index
+    // 1
+    final prefs = ref.read(sharedPrefProvider);
+    // 2
+    if (prefs.containsKey(prefSearchKey)) {
+      // 3
+      final searches = prefs.getStringList(prefSearchKey);
+      // 4
+      if (searches != null) {
+        previousSearches = searches;
+      } else {
+        previousSearches = <String>[];
+      }
+    }
   }
 
   @override
@@ -244,14 +260,22 @@ class _RecipeListState extends ConsumerState<RecipeList> {
   }
 
   void startSearch(String value) {
+//1
+    if (value.isEmpty) {
+      return;
+    }
+// 2
     setState(() {
+// 3
       currentSearchList.clear();
-      newDataRequired = true;
       currentCount = 0;
       currentEndPosition = pageCount;
       currentStartPosition = 0;
-      hasMore = false;
+      hasMore = true;
       value = value.trim();
+// 4
+// 5
+// 6
       if (!previousSearches.contains(value)) {
         previousSearches.add(value);
         savePreviousSearches();

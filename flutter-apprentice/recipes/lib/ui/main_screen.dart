@@ -1,12 +1,13 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../utils.dart';
-import 'groceries/groceries.dart';
-import 'theme/colors.dart';
-
-import 'recipes/recipe_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../providers.dart';
+import '../utils.dart';
+import 'groceries/groceries.dart';
+import 'recipes/recipe_list.dart';
+import 'theme/colors.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> {
   int _selectedIndex = 0;
   List<Widget> pageList = <Widget>[];
-  // TODO Add Index Key
+  static const String prefSelectedIndexKey = 'selectedIndex';
 
   @override
   void initState() {
@@ -29,11 +30,23 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   }
 
   void saveCurrentIndex() async {
-    // TODO Save Current Index
+    final prefs = ref.read(sharedPrefProvider);
+    prefs.setInt(prefSelectedIndexKey, _selectedIndex);
   }
 
   void getCurrentIndex() async {
-    // TODO Get Current Index
+    // 1
+    final prefs = ref.read(sharedPrefProvider);
+// 2
+    if (prefs.containsKey(prefSelectedIndexKey)) {
+// 3
+      setState(() {
+        final index = prefs.getInt(prefSelectedIndexKey);
+        if (index != null) {
+          _selectedIndex = index;
+        }
+      });
+    }
   }
 
   void _onItemTapped(int index) {

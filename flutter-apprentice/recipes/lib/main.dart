@@ -3,12 +3,14 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart' as system_log;
 import 'package:lumberdash/lumberdash.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'providers.dart';
 import 'ui/main_screen.dart';
 import 'ui/theme/theme.dart';
 import 'utils.dart';
-import 'package:logging/logging.dart' as system_log;
 
 Future<void> main() async {
   _setupLogging();
@@ -18,7 +20,15 @@ Future<void> main() async {
     await DesktopWindow.setWindowSize(const Size(600, 600));
     await DesktopWindow.setMinWindowSize(const Size(260, 600));
   }
-  // TODO Add Shared Preferences
+
+  // 1
+  final sharedPrefs = await SharedPreferences.getInstance();
+// 2
+  runApp(ProviderScope(overrides: [
+// 3
+    sharedPrefProvider.overrideWithValue(sharedPrefs),
+  ], child: const MyApp()));
+
   runApp(const ProviderScope(child: MyApp()));
 }
 

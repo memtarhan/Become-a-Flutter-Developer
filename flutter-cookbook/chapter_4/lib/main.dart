@@ -1,6 +1,5 @@
+import 'package:chapter_4/basic_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'immutable_widget.dart';
 
 // void main() => runApp(const StaticApp());
 void main() {
@@ -12,10 +11,9 @@ class StaticApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Flutter Demo",
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const ImmutableWidget(),
+    return const MaterialApp(
+      home: BasicScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

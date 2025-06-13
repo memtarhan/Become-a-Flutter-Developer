@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/src/utils/theme/theme.dart';
 
 void main() => runApp(const App());
 
@@ -8,10 +9,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
+      theme: TAppTheme.lightTheme,
+      darkTheme: TAppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const Home(),
+      home: Home(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -23,7 +24,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
         title: const Text(".appable/"),
         leading: const Icon(Icons.ondemand_video),
